@@ -1,12 +1,19 @@
+// code is meant to be copied in the console when navigating to a page on Twitter
 MAX_SCROLL = 1000;
 CUSTOM_SCROLL = 1; // less than MAX_SCROLL
-let autoUnblock = setInterval(function() {
+// auto-unblocks via simulated scrolling on user's settings --> list of blocked users [NEED TO FIND SOURCE]
+let autoUnblockSettings = setInterval(function() {
     window.scrollBy(0, window.innerHeight);
     document.querySelectorAll('[aria-label="Blocked"]').forEach(function(account) {
         account.click()
     });
 }, CUSTOM_SCROLL);
 
+/**
+ * 
+ * @param {String} txt 
+ * @returns Array of DOM buttons with a label specified by "txt"
+ */
 function findButtonByType(txt) {
     spans = document.querySelectorAll('span');
     spans = Array.from(spans);
@@ -15,15 +22,13 @@ function findButtonByType(txt) {
     return actionButtons;
 }
 
-let autoUnblock = setInterval(function() {
+// Unblocks all followers of a certain user
+let autoUnblockFollowers = setInterval(function() {
     window.scrollBy(0, window.innerHeight);
-    // spans = document.querySelectorAll('span');
-    // spans = Array.from(spans);
-    // blockedUsers = spans.filter(x => x['innerText'] == "Blocked");
-    // blockedButtons = blockedUsers.map(x => x.closest('div').parentNode);
     const blockedButtons = findButtonByType("Blocked");
     blockedButtons.forEach(function(account) {
         account.click();
+        // click confirmation dialogue that appears
         const unblockThis = findButtonByType("Unblock");
         unblockThis.forEach(x => x.click());
     });
